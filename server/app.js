@@ -1,5 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const compression = require('compression');
+const morgan = require('morgan');
 const mongoose = require('mongoose');
 
 const app = express();
@@ -10,6 +13,9 @@ const transactionRoutes = require('./routes/transaction');
 const userRoutes = require('./routes/user');
 
 app.use(cors());
+app.use(helmet());
+app.use(compression());
+app.use(morgan('combined'));
 app.use(express.json());
 
 app.use(userRoutes);
@@ -18,7 +24,7 @@ app.use(roomRoutes);
 app.use(transactionRoutes);
 
 mongoose
-    .connect('mongodb+srv://areskise:24110399@cluster0.vsce8sb.mongodb.net/booking?retryWrites=true&w=majority')
+    .connect("mongodb+srv://areskise:24110399@cluster0.vsce8sb.mongodb.net/booking?retryWrites=true&w=majority")
     .then(result => {
         app.listen(5000);
     })
